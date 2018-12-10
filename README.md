@@ -1,3 +1,10 @@
+# Peg Fascia
+
+This project is designed to consume an API displaying interesting data regarding YouTube content providers.
+
+I am leaving the below information for my own reference, and will delete most of it once I'm sure I won't need the instructions again.
+
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
