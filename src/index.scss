@@ -1,12 +1,25 @@
+$medium: "(min-width: 768px)";
+$large: "(min-width: 1024px)";
+
 body {
   font-family: Montserrat, sans-serif;
 }
 
 .container {
-  width: 90%;
-  margin: 0 auto;
   display: grid;
-  grid-template-columns: 1;
+  grid-template-columns: 100%;
+  background: coral;
+
+  @media #{$medium} {
+    width: 80%;
+    margin: 0 auto;
+    background: limegreen;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  @media #{$large} {
+    background: orange;
+  }
 }
 
 .video-preview__selected-video-container {
@@ -22,4 +35,11 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
+}
+
+.creator-information {
+  background-color: yellow;
+  @media #{$medium} {
+    grid-column-end: span 2;
+  }
 }
