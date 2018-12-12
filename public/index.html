@@ -1,14 +1,55 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="utf-8">
-    <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="manifest" href="%PUBLIC_URL%/manifest.json">
+    <meta charset="utf-8" />
+    <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
     <title>Peg Fascia</title>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
-    <div id="root">Uh oh! If you're seeing this, something went wrong.<br /><a href="#">Get in touch!</a></div>
-</body>
+    <div id="root">
+      Uh oh! If you're seeing this, something went wrong.<br /><a href="#"
+        >Get in touch!</a
+      >
+    </div>
+    <div class="container">
+      <header class="creator-information">
+        <h1 class="creator-information__name">NBA</h1>
+      </header>
+      <main>
+        <section class="quick-stats">
+          <h2 class="quick-stats__title">Quick stats:</h2>
+          <ul class="quick-stats__list">
+            <li class="quick-stats__list--total-videos">12</li>
+            <li class="quick-stats__list--average-likes-per-video">98.7%</li>
+            <li class="quick-stats__list--views-to-date">565,973</li>
+            <li class="quick-stats__list--new-content-release-average">
+              Every 0.5 day
+            </li>
+          </ul>
+        </section>
+        <section class="video-preview">
+          <h3 class="video-preview__section-title">Most liked video:</h3>
+          <iframe
+            class="video-preview__player"
+            width="560"
+            height="315"
+            src="https://www.youtube.com/embed/-olhd3oG3lI"
+            frameborder="0"
+            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen
+          ></iframe>
+          <p class="video-preview__video-title">
+            James Harden's 60-Point Triple-Double (First in NBA History) |
+            January 30, 2018
+          </p>
+        </section>
+      </main>
+    </div>
+  </body>
 </html>
