@@ -1,4 +1,23 @@
 body {
   font-family: sans-serif;
-  color: coral;
+}
+
+.container {
+  width: 90%;
+  margin: 0 auto;
+}
+
+.video-preview__selected-video-container {
+  position: relative;
+  width: 100%;
+  /* This padding value is to approximate a 16:9 ratio for the container */
+  padding-bottom: 56.25%;
+}
+
+.video-preview__selected-video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 }
