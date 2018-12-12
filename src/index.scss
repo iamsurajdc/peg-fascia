@@ -1,10 +1,12 @@
 body {
-  font-family: sans-serif;
+  font-family: Montserrat, sans-serif;
 }
 
 .container {
   width: 90%;
   margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1;
 }
 
 .video-preview__selected-video-container {
