@@ -1,22 +1,23 @@
-import React, { Component } from "react";
+import React from "react";
 import "./VideoPreview.scss";
 
 const VideoPreview = props => {
   return (
-    <section class="video-preview">
-      <div class="video-preview__selected-video-container">
+    <section className="video-preview">
+      <div className="video-preview__selected-video-container">
         <iframe
-          class="video-preview__selected-video"
+          className="video-preview__selected-video"
+          title="Most popular video"
           width="560"
           height="315"
-          src="https://www.youtube.com/embed/-olhd3oG3lI"
-          frameborder="0"
+          src="https://www.youtube.com/embed/-olhd3oG3lI?modestbranding=1"
+          frameBorder="0"
           allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-          allowfullscreen
+          allowFullScreen
         />
-        <div class="video-preview__information">
-          <h3 class="video-preview__section-title">Most liked video:</h3>
-          <p class="video-preview__selected-video-title">
+        <div className="video-preview__information">
+          <h3 className="video-preview__section-title">Most liked video:</h3>
+          <p className="video-preview__selected-video-title">
             James Harden's 60-Point Triple-Double (First in NBA History) |
             January 30, 2018
           </p>

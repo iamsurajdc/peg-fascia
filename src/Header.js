@@ -1,10 +1,10 @@
-import React, { Component } from "react";
+import React from "react";
 import "./Header.scss";
 
 const Header = props => {
   return (
-    <header class="creator-information">
-      <h1 class="creator-information__name">NBA</h1>
+    <header className="creator-information">
+      <h1 className="creator-information__name">{props.creatorName}</h1>
     </header>
   );
 };

@@ -1,6 +1,6 @@
 @import "./Utilities.scss";
 
-video-preview {
+.video-preview {
   padding: 2em;
 
   @media #{$medium} {
@@ -43,7 +43,7 @@ video-preview {
 }
 
 .video-preview__selected-video-title {
-  background-color: salmon;
+  background-color: limegreen;
   float: left;
   clear: left;
   display: inline-block;

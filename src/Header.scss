@@ -1,11 +1,20 @@
 @import "./Utilities.scss";
 
 .creator-information {
-  background-color: yellow;
   text-align: center;
-  padding: 1em;
+  padding: 2em 2em 0 2em;
 
   @media #{$medium} {
     grid-column-end: span 2;
+  }
+}
+
+.creator-information__name {
+  background-color: hotpink;
+  padding: 0.5em;
+  font-size: 2em;
+
+  @media #{$medium} {
+    font-size: 3em;
   }
 }

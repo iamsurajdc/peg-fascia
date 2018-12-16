@@ -1,13 +1,6 @@
 @import "./Utilities.scss";
 
-#root {
-  @media #{$medium} {
-    width: 80%;
-    margin: 0 auto;
-  }
-}
-
-.container {
+.App {
   display: grid;
   grid-template-columns: 100%;
 
