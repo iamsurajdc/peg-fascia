@@ -1,45 +1,8 @@
-// VARIABLES
-
-$medium: "(min-width: 768px)";
-$large: "(min-width: 1024px)";
-
-// PAGE SETUP
+@import "./Utilities.scss";
 
 body {
   font-family: Montserrat, sans-serif;
   font-size: 10px;
-}
-
-// CONTAINER STYLES
-
-.container {
-  display: grid;
-  grid-template-columns: 100%;
-  background: coral;
-
-  @media #{$medium} {
-    width: 80%;
-    margin: 0 auto;
-    background: limegreen;
-    grid-template-columns: 0.625fr 0.375fr;
-    column-gap: 2em;
-  }
-
-  @media #{$large} {
-    background: orange;
-  }
-}
-
-// HEADER STYLES
-
-.creator-information {
-  background-color: yellow;
-  text-align: center;
-  padding: 1em;
-
-  @media #{$medium} {
-    grid-column-end: span 2;
-  }
 }
 
 .creator-information__name {

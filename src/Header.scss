@@ -1,0 +1,11 @@
+@import "./Utilities.scss";
+
+.creator-information {
+  background-color: yellow;
+  text-align: center;
+  padding: 1em;
+
+  @media #{$medium} {
+    grid-column-end: span 2;
+  }
+}
