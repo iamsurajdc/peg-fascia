@@ -50,6 +50,10 @@ class App extends Component {
     });
   }
 
+  getTotalVideos() {
+    return this.state.items.length;
+  }
+
   componentDidMount() {
     fetch(API)
       .then(response => response.json())
@@ -75,15 +79,19 @@ class App extends Component {
     let mostLikedVideoLink;
     let mostLikedVideoThumbnail;
     let videoContent;
+    let totalVideoCount;
 
     if (!this.state.isLoaded) {
       mostLikedVideoTitle = "Still loading";
       mostLikedVideoLink = "#";
       mostLikedVideoThumbnail = "#";
+      totalVideoCount = "~";
     } else {
       mostLikedVideoTitle = this.state.highlightedVideo.title;
       mostLikedVideoLink = this.state.highlightedVideo.link;
       mostLikedVideoThumbnail = this.state.highlightedVideo.thumbnail;
+      totalVideoCount = this.getTotalVideos();
+
       videoContent = (
         <VideoPreview
           videoTitle={mostLikedVideoTitle}
@@ -97,7 +105,7 @@ class App extends Component {
       <div className="App">
         <Header creatorName={mostLikedVideoTitle} />
         {videoContent}
-        <QuickStats />
+        <QuickStats videoCount={totalVideoCount} />
       </div>
     );
   }

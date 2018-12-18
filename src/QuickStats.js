@@ -7,7 +7,8 @@ const QuickStats = props => {
       <h2 className="quick-stats__title">Quick stats:</h2>
       <ul className="quick-stats__list">
         <li className="quick-stats__list--total-videos">
-          NBA's total uploads: <span className="statistic">12 videos</span>
+          NBA's total uploads:{" "}
+          <span className="statistic">{props.videoCount} videos</span>
         </li>
         <li className="quick-stats__list--average-likes-per-video">
           Average likes per video: <span className="statistic">98.7%</span>
