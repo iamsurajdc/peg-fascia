@@ -1,30 +1,60 @@
-import React from "react";
+import React, { Component } from "react";
+import VideoInformation from "./VideoInformation";
 import "./VideoPreview.scss";
 
-const VideoPreview = props => {
-  return (
-    <section className="video-preview">
-      <div className="video-preview__selected-video-container">
-        <iframe
-          className="video-preview__selected-video"
-          title="Most popular video"
-          width="560"
-          height="315"
-          src="https://www.youtube.com/embed/-olhd3oG3lI?modestbranding=1"
-          frameBorder="0"
-          allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-          allowFullScreen
-        />
-        <div className="video-preview__information">
-          <h3 className="video-preview__section-title">Most liked video:</h3>
-          <p className="video-preview__selected-video-title">
-            James Harden's 60-Point Triple-Double (First in NBA History) |
-            January 30, 2018
-          </p>
+class VideoPreview extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      displayVideo: null
+    };
+
+    this.buildVideoLink = this.buildVideoLink.bind(this);
+    this.loadVideo = this.loadVideo.bind(this);
+  }
+
+  buildVideoLink(videoID) {
+    return "https://www.youtube.com/embed/" + videoID + "?modestbranding=1";
+  }
+
+  loadVideo() {
+    this.setState({ displayVideo: true });
+  }
+
+  render() {
+    let videoContent;
+
+    if (this.state.displayVideo) {
+      videoContent = (
+        <div className="video__selected-video-container">
+          <iframe
+            className="video__selected-video"
+            title="Most popular video"
+            width="560"
+            height="315"
+            src={this.buildVideoLink(this.props.videoLink)}
+            frameBorder="0"
+            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+          />
+          <VideoInformation videoTitle={this.props.videoTitle} />
         </div>
-      </div>
-    </section>
-  );
-};
+      );
+    } else {
+      videoContent = (
+        <div className="video__selected-video-container">
+          <img className="video__placeholder" src={this.props.videoThumbnail} />
+          <VideoInformation videoTitle={this.props.videoTitle} />
+        </div>
+      );
+    }
+    return (
+      <section className="video" onClick={this.loadVideo}>
+        {videoContent}
+      </section>
+    );
+  }
+}
 
 export default VideoPreview;
