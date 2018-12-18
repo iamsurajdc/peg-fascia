@@ -1,6 +1,6 @@
 @import "./Utilities.scss";
 
-.video-preview {
+.video {
   padding: 2em;
 
   @media #{$medium} {
@@ -8,46 +8,18 @@
   }
 }
 
-.video-preview__selected-video-container {
+.video__selected-video-container {
   /* This padding value is to approximate a 16:9 ratio for the container */
   padding-bottom: 56.25%;
   position: relative;
   width: 100%;
 }
 
-.video-preview__selected-video {
+.video__placeholder,
+.video__selected-video {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-}
-.video-preview__information {
-  bottom: 0;
-  max-width: 62.5%;
-  position: absolute;
-}
-
-.video-preview__section-title {
-}
-
-.video-preview__section-title,
-.quick-stats__title {
-  float: left;
-  padding: 0.5em;
-  margin-bottom: 1em;
-  display: inline-block;
-  background-color: hotpink;
-  font-size: 1.25em;
-  text-transform: uppercase;
-}
-
-.video-preview__selected-video-title {
-  background-color: limegreen;
-  float: left;
-  clear: left;
-  display: inline-block;
-  padding: 0.5em;
-  font-size: 1em;
-  margin-bottom: 1em;
 }

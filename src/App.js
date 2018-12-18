@@ -76,17 +76,32 @@ class App extends Component {
   }
 
   render() {
-    let mostLikedVideo;
+    let mostLikedVideoTitle;
+    let mostLikedVideoLink;
+    let mostLikedVideoThumbnail;
+    let videoContent;
+
     if (!this.state.isLoaded) {
-      mostLikedVideo = "Still loading";
+      mostLikedVideoTitle = "Still loading";
+      mostLikedVideoLink = "#";
+      mostLikedVideoThumbnail = "#";
     } else {
-      mostLikedVideo = this.state.highlightedVideo.title;
+      mostLikedVideoTitle = this.state.highlightedVideo.title;
+      mostLikedVideoLink = this.state.highlightedVideo.link;
+      mostLikedVideoThumbnail = this.state.highlightedVideo.thumbnail;
+      videoContent = (
+        <VideoPreview
+          videoTitle={mostLikedVideoTitle}
+          videoLink={mostLikedVideoLink}
+          videoThumbnail={mostLikedVideoThumbnail}
+        />
+      );
     }
 
     return (
       <div className="App">
-        <Header creatorName={mostLikedVideo} />
-        <VideoPreview />
+        <Header creatorName={mostLikedVideoTitle} />
+        {videoContent}
         <QuickStats />
       </div>
     );
