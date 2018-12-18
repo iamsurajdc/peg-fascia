@@ -14,12 +14,13 @@ class App extends Component {
       error: null,
       isLoaded: false,
       items: null,
-      title: null
+      highlightedVideo: null
     };
 
     this.extractFirstTitle = this.extractFirstTitle.bind(this);
     this.likesVsDislikesPercentage = this.likesVsDislikesPercentage.bind(this);
     this.setLikesPercentage = this.setLikesPercentage.bind(this);
+    this.getMostLikedVideo = this.getMostLikedVideo.bind(this);
   }
 
   extractFirstTitle(array) {
@@ -39,6 +40,21 @@ class App extends Component {
     return videos.map(video => this.likesVsDislikesPercentage(video));
   }
 
+  getMostLikedVideo(videos) {
+    let mostLikedVideo = null;
+    Math.max.apply(
+      Math,
+      videos.map(function(video) {
+        return (mostLikedVideo = video.likesPercentage);
+      })
+    );
+    this.setState({
+      highlightedVideo: videos.find(
+        video => video.likesPercentage === mostLikedVideo
+      )
+    });
+  }
+
   componentDidMount() {
     fetch(API)
       .then(response => response.json())
@@ -46,7 +62,8 @@ class App extends Component {
         result => {
           this.setState({
             isLoaded: true,
-            items: this.setLikesPercentage(result)
+            items: this.setLikesPercentage(result),
+            mostLikedVideo: this.getMostLikedVideo(result)
           });
         },
         error => {
@@ -59,9 +76,16 @@ class App extends Component {
   }
 
   render() {
+    let mostLikedVideo;
+    if (!this.state.isLoaded) {
+      mostLikedVideo = "Still loading";
+    } else {
+      mostLikedVideo = this.state.highlightedVideo.title;
+    }
+
     return (
       <div className="App">
-        <Header creatorName={"Something has gone wrong"} />
+        <Header creatorName={mostLikedVideo} />
         <VideoPreview />
         <QuickStats />
       </div>
