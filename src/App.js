@@ -26,7 +26,7 @@ class App extends Component {
     const sum = (total, video) => {
       return total + video.views;
     };
-    return videos.reduce(sum, 0);
+    return videos.reduce(sum, 0).toLocaleString();
   }
 
   collectedLikes(videos) {
@@ -73,7 +73,7 @@ class App extends Component {
     return video;
   }
 
-  setLikesPercentage(videos) {
+  setLikesPercentageForEachVideo(videos) {
     return videos.map(video => this.videoLikesVsDislikesPercentage(video));
   }
 
@@ -103,7 +103,7 @@ class App extends Component {
         result => {
           this.setState({
             isLoaded: true,
-            items: this.setLikesPercentage(result),
+            items: this.setLikesPercentageForEachVideo(result),
             mostLikedVideo: this.getMostLikedVideo(result)
           });
         },
@@ -159,6 +159,7 @@ class App extends Component {
         <Header creatorName={creatorName} />
         {videoContent}
         <QuickStats
+          creatorName={creatorName}
           videoCount={totalVideoCount}
           averageLikesPerVideo={averageLikesPerVideo}
           totalViewsToDate={totalViewsToDate}
