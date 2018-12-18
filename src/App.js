@@ -17,14 +17,9 @@ class App extends Component {
       highlightedVideo: null
     };
 
-    this.extractFirstTitle = this.extractFirstTitle.bind(this);
     this.likesVsDislikesPercentage = this.likesVsDislikesPercentage.bind(this);
     this.setLikesPercentage = this.setLikesPercentage.bind(this);
     this.getMostLikedVideo = this.getMostLikedVideo.bind(this);
-  }
-
-  extractFirstTitle(array) {
-    return array[0]["title"];
   }
 
   likesVsDislikesPercentage(video) {
