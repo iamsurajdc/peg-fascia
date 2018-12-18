@@ -18,6 +18,10 @@ class App extends Component {
     };
   }
 
+  getCreatorName() {
+    return this.state.highlightedVideo.title.split("| ")[1];
+  }
+
   likesVsDislikesPercentage(video) {
     let allInteractions = video.likes + video.dislikes;
     let likesPercentage = (video.likes / allInteractions) * 100;
@@ -71,6 +75,7 @@ class App extends Component {
   }
 
   render() {
+    let creatorName;
     let mostLikedVideoTitle;
     let mostLikedVideoLink;
     let mostLikedVideoThumbnail;
@@ -78,11 +83,13 @@ class App extends Component {
     let totalVideoCount;
 
     if (!this.state.isLoaded) {
+      creatorName = "Still loading";
       mostLikedVideoTitle = "Still loading";
       mostLikedVideoLink = "#";
       mostLikedVideoThumbnail = "#";
       totalVideoCount = "~";
     } else {
+      creatorName = this.getCreatorName();
       mostLikedVideoTitle = this.state.highlightedVideo.title;
       mostLikedVideoLink = this.state.highlightedVideo.link;
       mostLikedVideoThumbnail = this.state.highlightedVideo.thumbnail;
@@ -99,7 +106,7 @@ class App extends Component {
 
     return (
       <div className="App">
-        <Header creatorName={mostLikedVideoTitle} />
+        <Header creatorName={creatorName} />
         {videoContent}
         <QuickStats videoCount={totalVideoCount} />
       </div>
