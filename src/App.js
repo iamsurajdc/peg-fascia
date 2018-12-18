@@ -22,17 +22,59 @@ class App extends Component {
     return this.state.highlightedVideo.title.split("| ")[1];
   }
 
-  likesVsDislikesPercentage(video) {
+  getTotalViewsToDate(videos) {
+    const sum = (total, video) => {
+      return total + video.views;
+    };
+    return videos.reduce(sum, 0);
+  }
+
+  collectedLikes(videos) {
+    const sum = (total, video) => {
+      return total + video.likes;
+    };
+    return videos.reduce(sum, 0);
+  }
+
+  collectedDislikes(videos) {
+    const sum = (total, video) => {
+      return total + video.dislikes;
+    };
+    return videos.reduce(sum, 0);
+  }
+
+  percentage(numerator, denominator) {
+    return (numerator / denominator) * 100;
+  }
+
+  collectedLikesVsDislikesPercentage(videos) {
+    let likesAcrossAllVideos = this.collectedLikes(videos);
+    let dislikesAcrossAllVideos = this.collectedDislikes(videos);
+    let allInteractions = likesAcrossAllVideos + dislikesAcrossAllVideos;
+    let allLikesPercentage = this.percentage(
+      likesAcrossAllVideos,
+      allInteractions
+    );
+    let allDislikesPercentage = this.percentage(
+      dislikesAcrossAllVideos,
+      allInteractions
+    );
+    let difference = Math.abs(allLikesPercentage - allDislikesPercentage);
+    return difference.toFixed(1);
+  }
+
+  videoLikesVsDislikesPercentage(video) {
     let allInteractions = video.likes + video.dislikes;
-    let likesPercentage = (video.likes / allInteractions) * 100;
-    let dislikesPercentage = (video.dislikes / allInteractions) * 100;
+    let likesPercentage = this.percentage(video.likes, allInteractions);
+    let dislikesPercentage = this.percentage(video.dislikes, allInteractions);
+
     let difference = Math.abs(likesPercentage - dislikesPercentage);
     video.likesPercentage = difference;
     return video;
   }
 
   setLikesPercentage(videos) {
-    return videos.map(video => this.likesVsDislikesPercentage(video));
+    return videos.map(video => this.videoLikesVsDislikesPercentage(video));
   }
 
   getMostLikedVideo(videos) {
@@ -81,6 +123,8 @@ class App extends Component {
     let mostLikedVideoThumbnail;
     let videoContent;
     let totalVideoCount;
+    let averageLikesPerVideo;
+    let totalViewsToDate;
 
     if (!this.state.isLoaded) {
       creatorName = "Still loading";
@@ -88,12 +132,18 @@ class App extends Component {
       mostLikedVideoLink = "#";
       mostLikedVideoThumbnail = "#";
       totalVideoCount = "~";
+      averageLikesPerVideo = "~";
+      totalViewsToDate = "~";
     } else {
       creatorName = this.getCreatorName();
       mostLikedVideoTitle = this.state.highlightedVideo.title;
       mostLikedVideoLink = this.state.highlightedVideo.link;
       mostLikedVideoThumbnail = this.state.highlightedVideo.thumbnail;
       totalVideoCount = this.getTotalVideos();
+      averageLikesPerVideo = this.collectedLikesVsDislikesPercentage(
+        this.state.items
+      );
+      totalViewsToDate = this.getTotalViewsToDate(this.state.items);
 
       videoContent = (
         <VideoPreview
@@ -108,7 +158,11 @@ class App extends Component {
       <div className="App">
         <Header creatorName={creatorName} />
         {videoContent}
-        <QuickStats videoCount={totalVideoCount} />
+        <QuickStats
+          videoCount={totalVideoCount}
+          averageLikesPerVideo={averageLikesPerVideo}
+          totalViewsToDate={totalViewsToDate}
+        />
       </div>
     );
   }

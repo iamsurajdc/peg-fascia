@@ -11,10 +11,12 @@ const QuickStats = props => {
           <span className="statistic">{props.videoCount} videos</span>
         </li>
         <li className="quick-stats__list--average-likes-per-video">
-          Average likes per video: <span className="statistic">98.7%</span>
+          Average likes per video:{" "}
+          <span className="statistic">{props.averageLikesPerVideo}%</span>
         </li>
         <li className="quick-stats__list--views-to-date">
-          Total views to date: <span className="statistic">565,973</span>
+          Total views to date:{" "}
+          <span className="statistic">{props.totalViewsToDate}</span>
         </li>
         <li className="quick-stats__list--new-content-release-average">
           NBA releases content on average:

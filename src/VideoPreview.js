@@ -44,7 +44,11 @@ class VideoPreview extends Component {
     } else {
       videoContent = (
         <div className="video__selected-video-container">
-          <img className="video__placeholder" src={this.props.videoThumbnail} />
+          <img
+            className="video__placeholder"
+            alt="video placeholder"
+            src={this.props.videoThumbnail}
+          />
           <VideoInformation videoTitle={this.props.videoTitle} />
         </div>
       );
