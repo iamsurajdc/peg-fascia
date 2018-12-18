@@ -16,10 +16,6 @@ class App extends Component {
       items: null,
       highlightedVideo: null
     };
-
-    this.likesVsDislikesPercentage = this.likesVsDislikesPercentage.bind(this);
-    this.setLikesPercentage = this.setLikesPercentage.bind(this);
-    this.getMostLikedVideo = this.getMostLikedVideo.bind(this);
   }
 
   likesVsDislikesPercentage(video) {
