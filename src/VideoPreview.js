@@ -38,6 +38,7 @@ class VideoPreview extends Component {
             allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
             allowFullScreen
           />
+          <VideoInformation videoTitle={this.props.videoTitle} />
         </div>
       );
     } else {

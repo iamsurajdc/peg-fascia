@@ -1,12 +1,13 @@
 .video-information {
   bottom: 0;
+  right: 0;
   max-width: 62.5%;
   position: absolute;
   z-index: 999;
 }
 
 .video-information__section-title {
-  float: left;
+  float: right;
   padding: 0.5em;
   margin-bottom: 1em;
   display: inline-block;
@@ -18,7 +19,7 @@
 .video-information__selected-video-title {
   background-color: limegreen;
   float: left;
-  clear: left;
+  clear: both;
   display: inline-block;
   padding: 0.5em;
   font-size: 1em;
