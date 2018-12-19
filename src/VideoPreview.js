@@ -2,6 +2,9 @@ import React, { Component } from "react";
 import VideoInformation from "./VideoInformation";
 import "./VideoPreview.scss";
 
+// Make sure there are placeholders for pre-loading
+
+// Try and move the state out from this child to App.js
 class VideoPreview extends Component {
   constructor(props) {
     super(props);

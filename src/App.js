@@ -13,7 +13,7 @@ class App extends Component {
     this.state = {
       error: null,
       isLoaded: false,
-      items: null,
+      items: [],
       highlightedVideo: null
     };
   }
@@ -27,6 +27,54 @@ class App extends Component {
       return total + video.views;
     };
     return videos.reduce(sum, 0).toLocaleString();
+  }
+
+  sortByDate(videos) {
+    return videos.sort(
+      (a, b) => Date.parse(a.published_at) - Date.parse(b.published_at)
+    );
+  }
+
+  dateSortedCopyOfItems(items) {
+    // Creates a deep copy of the array (& contained objects)
+    return JSON.parse(JSON.stringify(this.sortByDate(items)));
+  }
+
+  getUploadIntervals(collection) {
+    let limit = collection.length - 1;
+    let timestamps = [];
+
+    for (let i = 0; i <= limit; i++) {
+      if (i < limit) {
+        let upload_a = Date.parse(collection[i].published_at);
+        let upload_b = Date.parse(collection[i + 1].published_at);
+        let timeDifference = this.differenceBetween(upload_a, upload_b);
+        let days = this.millisecondsToDays(timeDifference);
+        timestamps.push(days);
+      }
+    }
+    return timestamps;
+  }
+
+  millisecondsToDays(milliseconds) {
+    return milliseconds / (1000 * 60 * 60 * 24);
+  }
+
+  averageTimeBetweenUploads() {
+    let orderedUploads = this.dateSortedCopyOfItems(this.state.items);
+    let timestamps = this.getUploadIntervals(orderedUploads);
+
+    const sum = (total, timestamp) => {
+      return total + timestamp;
+    };
+
+    let total = timestamps.reduce(sum, 0);
+    console.log(total / 11);
+    return (total / 11).toFixed(1);
+  }
+
+  differenceBetween(a, b) {
+    return Math.abs(a - b);
   }
 
   collectedLikes(videos) {
@@ -55,21 +103,13 @@ class App extends Component {
       likesAcrossAllVideos,
       allInteractions
     );
-    let allDislikesPercentage = this.percentage(
-      dislikesAcrossAllVideos,
-      allInteractions
-    );
-    let difference = Math.abs(allLikesPercentage - allDislikesPercentage);
-    return difference.toFixed(1);
+    return allLikesPercentage.toFixed(1);
   }
 
   videoLikesVsDislikesPercentage(video) {
     let allInteractions = video.likes + video.dislikes;
     let likesPercentage = this.percentage(video.likes, allInteractions);
-    let dislikesPercentage = this.percentage(video.dislikes, allInteractions);
-
-    let difference = Math.abs(likesPercentage - dislikesPercentage);
-    video.likesPercentage = difference;
+    video.likesPercentage = likesPercentage;
     return video;
   }
 
@@ -124,17 +164,10 @@ class App extends Component {
     let videoContent;
     let totalVideoCount;
     let averageLikesPerVideo;
+    let averageUploadInterval;
     let totalViewsToDate;
 
-    if (!this.state.isLoaded) {
-      creatorName = "Still loading";
-      mostLikedVideoTitle = "Still loading";
-      mostLikedVideoLink = "#";
-      mostLikedVideoThumbnail = "#";
-      totalVideoCount = "~";
-      averageLikesPerVideo = "~";
-      totalViewsToDate = "~";
-    } else {
+    if (this.state.isLoaded) {
       creatorName = this.getCreatorName();
       mostLikedVideoTitle = this.state.highlightedVideo.title;
       mostLikedVideoLink = this.state.highlightedVideo.link;
@@ -144,6 +177,9 @@ class App extends Component {
         this.state.items
       );
       totalViewsToDate = this.getTotalViewsToDate(this.state.items);
+      averageUploadInterval = this.averageTimeBetweenUploads(this.state.items);
+
+      // TODO: Go back to the two components of placeholder and player
 
       videoContent = (
         <VideoPreview
@@ -152,8 +188,16 @@ class App extends Component {
           videoThumbnail={mostLikedVideoThumbnail}
         />
       );
+    } else {
+      creatorName = "Still loading";
+      mostLikedVideoTitle = "Still loading";
+      mostLikedVideoLink = "#";
+      mostLikedVideoThumbnail = "#";
+      totalVideoCount = "~";
+      averageLikesPerVideo = "~";
+      totalViewsToDate = "~";
+      averageUploadInterval = "~";
     }
-
     return (
       <div className="App">
         <Header creatorName={creatorName} />
@@ -163,6 +207,7 @@ class App extends Component {
           videoCount={totalVideoCount}
           averageLikesPerVideo={averageLikesPerVideo}
           totalViewsToDate={totalViewsToDate}
+          averageUploadInterval={averageUploadInterval}
         />
       </div>
     );

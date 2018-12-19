@@ -20,7 +20,9 @@ const QuickStats = props => {
         </li>
         <li className="quick-stats__list--new-content-release-average">
           {props.creatorName} releases content on average:
-          <span className="statistic">Every 0.5 days</span>
+          <span className="statistic">
+            Every {props.averageUploadInterval} days
+          </span>
         </li>
       </ul>
     </section>
