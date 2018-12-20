@@ -13,12 +13,7 @@ class VideoPreview extends Component {
       displayVideo: null
     };
 
-    this.buildVideoLink = this.buildVideoLink.bind(this);
     this.loadVideo = this.loadVideo.bind(this);
-  }
-
-  buildVideoLink(videoID) {
-    return "https://www.youtube.com/embed/" + videoID + "?modestbranding=1";
   }
 
   loadVideo() {
@@ -30,35 +25,32 @@ class VideoPreview extends Component {
 
     if (this.state.displayVideo) {
       videoContent = (
-        <div className="video__selected-video-container">
-          <iframe
-            className="video__selected-video"
-            title="Most popular video"
-            width="560"
-            height="315"
-            src={this.buildVideoLink(this.props.videoLink)}
-            frameBorder="0"
-            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-          />
-          <VideoInformation videoTitle={this.props.videoTitle} />
-        </div>
+        <iframe
+          className="video__selected-video"
+          title="Most popular video"
+          width="560"
+          height="315"
+          src={this.props.videoLink}
+          frameBorder="0"
+          allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+          allowFullScreen
+        />
       );
     } else {
       videoContent = (
-        <div className="video__selected-video-container">
-          <img
-            className="video__placeholder"
-            alt="video placeholder"
-            src={this.props.videoThumbnail}
-          />
-          <VideoInformation videoTitle={this.props.videoTitle} />
-        </div>
+        <img
+          className="video__placeholder"
+          alt="video placeholder"
+          src={this.props.videoThumbnail}
+        />
       );
     }
     return (
       <section className="video" onClick={this.loadVideo}>
-        {videoContent}
+        <div className="video__selected-video-container">
+          {videoContent}
+          <VideoInformation videoTitle={this.props.videoTitle} />
+        </div>
       </section>
     );
   }

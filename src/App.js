@@ -69,7 +69,6 @@ class App extends Component {
     };
 
     let total = timestamps.reduce(sum, 0);
-    console.log(total / 11);
     return (total / 11).toFixed(1);
   }
 
@@ -136,24 +135,27 @@ class App extends Component {
     return this.state.items.length;
   }
 
+  buildVideoLink(videoID) {
+    return "https://www.youtube.com/embed/" + videoID + "?modestbranding=1";
+  }
+
   componentDidMount() {
     fetch(API)
       .then(response => response.json())
-      .then(
-        result => {
-          this.setState({
-            isLoaded: true,
-            items: this.setLikesPercentageForEachVideo(result),
-            mostLikedVideo: this.getMostLikedVideo(result)
-          });
-        },
-        error => {
-          this.setState({
-            isLoaded: true,
-            error
-          });
-        }
-      );
+      .then(result => {
+        this.setState({
+          isLoaded: true,
+          items: this.setLikesPercentageForEachVideo(result),
+          mostLikedVideo: this.getMostLikedVideo(result)
+        });
+      })
+      .catch(error => {
+        console.log("Error:", error);
+        this.setState({
+          isLoaded: false,
+          error: error
+        });
+      });
   }
 
   render() {
@@ -170,7 +172,9 @@ class App extends Component {
     if (this.state.isLoaded) {
       creatorName = this.getCreatorName();
       mostLikedVideoTitle = this.state.highlightedVideo.title;
-      mostLikedVideoLink = this.state.highlightedVideo.link;
+      mostLikedVideoLink = this.buildVideoLink(
+        this.state.highlightedVideo.link
+      );
       mostLikedVideoThumbnail = this.state.highlightedVideo.thumbnail;
       totalVideoCount = this.getTotalVideos();
       averageLikesPerVideo = this.collectedLikesVsDislikesPercentage(
@@ -178,7 +182,6 @@ class App extends Component {
       );
       totalViewsToDate = this.getTotalViewsToDate(this.state.items);
       averageUploadInterval = this.averageTimeBetweenUploads(this.state.items);
-
       // TODO: Go back to the two components of placeholder and player
 
       videoContent = (
@@ -192,11 +195,13 @@ class App extends Component {
       creatorName = "Still loading";
       mostLikedVideoTitle = "Still loading";
       mostLikedVideoLink = "#";
-      mostLikedVideoThumbnail = "#";
+      mostLikedVideoThumbnail = "../images/videoPlaceholder.gif";
       totalVideoCount = "~";
       averageLikesPerVideo = "~";
       totalViewsToDate = "~";
       averageUploadInterval = "~";
+
+      videoContent = <VideoPreview videoThumbnail={mostLikedVideoThumbnail} />;
     }
     return (
       <div className="App">
