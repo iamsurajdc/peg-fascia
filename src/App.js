@@ -4,7 +4,7 @@ import VideoPreview from "./VideoPreview";
 import QuickStats from "./QuickStats";
 import "./App.scss";
 
-const API = "http://localhost:3030/videos";
+const API = "http://localhost:3030/vides";
 
 class App extends Component {
   constructor(props) {
@@ -182,26 +182,27 @@ class App extends Component {
       );
       totalViewsToDate = this.getTotalViewsToDate(this.state.items);
       averageUploadInterval = this.averageTimeBetweenUploads(this.state.items);
-      // TODO: Go back to the two components of placeholder and player
 
       videoContent = (
         <VideoPreview
           videoTitle={mostLikedVideoTitle}
           videoLink={mostLikedVideoLink}
           videoThumbnail={mostLikedVideoThumbnail}
+          apiConnectionSuccess={this.state.isLoaded}
         />
       );
     } else {
-      creatorName = "Still loading";
-      mostLikedVideoTitle = "Still loading";
+      creatorName = "~";
+      mostLikedVideoTitle = "~";
       mostLikedVideoLink = "#";
-      mostLikedVideoThumbnail = "../images/videoPlaceholder.gif";
       totalVideoCount = "~";
       averageLikesPerVideo = "~";
       totalViewsToDate = "~";
       averageUploadInterval = "~";
 
-      videoContent = <VideoPreview videoThumbnail={mostLikedVideoThumbnail} />;
+      videoContent = (
+        <VideoPreview apiConnectionSuccess={this.state.isLoaded} />
+      );
     }
     return (
       <div className="App">

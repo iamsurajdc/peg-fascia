@@ -1,10 +1,8 @@
 import React, { Component } from "react";
 import VideoInformation from "./VideoInformation";
+import VideoPlaceholder from "./VideoPlaceholder";
 import "./VideoPreview.scss";
 
-// Make sure there are placeholders for pre-loading
-
-// Try and move the state out from this child to App.js
 class VideoPreview extends Component {
   constructor(props) {
     super(props);
@@ -17,7 +15,9 @@ class VideoPreview extends Component {
   }
 
   loadVideo() {
-    this.setState({ displayVideo: true });
+    if (this.props.apiConnectionSuccess) {
+      this.setState({ displayVideo: true });
+    }
   }
 
   render() {
@@ -38,10 +38,9 @@ class VideoPreview extends Component {
       );
     } else {
       videoContent = (
-        <img
-          className="video__placeholder"
-          alt="video placeholder"
-          src={this.props.videoThumbnail}
+        <VideoPlaceholder
+          apiConnectionSuccess={this.props.apiConnectionSuccess}
+          videoThumbnail={this.props.videoThumbnail}
         />
       );
     }
@@ -49,7 +48,10 @@ class VideoPreview extends Component {
       <section className="video" onClick={this.loadVideo}>
         <div className="video__selected-video-container">
           {videoContent}
-          <VideoInformation videoTitle={this.props.videoTitle} />
+          <VideoInformation
+            videoTitle={this.props.videoTitle}
+            apiConnectionSuccess={this.props.apiConnectionSuccess}
+          />
         </div>
       </section>
     );
