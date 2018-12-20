@@ -4,7 +4,7 @@ import VideoPreview from "./VideoPreview";
 import QuickStats from "./QuickStats";
 import "./App.scss";
 
-const API = "http://localhost:3030/vides";
+const API = "http://localhost:3030/videos";
 
 class App extends Component {
   constructor(props) {
@@ -14,8 +14,11 @@ class App extends Component {
       error: null,
       isLoaded: false,
       items: [],
-      highlightedVideo: null
+      highlightedVideo: null,
+      displayVideo: false
     };
+
+    this.loadVideo = this.loadVideo.bind(this);
   }
 
   getCreatorName() {
@@ -139,6 +142,12 @@ class App extends Component {
     return "https://www.youtube.com/embed/" + videoID + "?modestbranding=1";
   }
 
+  loadVideo() {
+    if (this.state.isLoaded) {
+      this.setState({ displayVideo: true });
+    }
+  }
+
   componentDidMount() {
     fetch(API)
       .then(response => response.json())
@@ -168,6 +177,7 @@ class App extends Component {
     let averageLikesPerVideo;
     let averageUploadInterval;
     let totalViewsToDate;
+    let displayVideo = this.state.displayVideo;
 
     if (this.state.isLoaded) {
       creatorName = this.getCreatorName();
@@ -189,6 +199,7 @@ class App extends Component {
           videoLink={mostLikedVideoLink}
           videoThumbnail={mostLikedVideoThumbnail}
           apiConnectionSuccess={this.state.isLoaded}
+          displayVideo={displayVideo}
         />
       );
     } else {
@@ -201,13 +212,18 @@ class App extends Component {
       averageUploadInterval = "~";
 
       videoContent = (
-        <VideoPreview apiConnectionSuccess={this.state.isLoaded} />
+        <VideoPreview
+          apiConnectionSuccess={this.state.isLoaded}
+          displayVideo={displayVideo}
+        />
       );
     }
     return (
       <div className="App">
         <Header creatorName={creatorName} />
-        {videoContent}
+        <section className="video" onClick={this.loadVideo}>
+          {videoContent}
+        </section>
         <QuickStats
           creatorName={creatorName}
           videoCount={totalVideoCount}
