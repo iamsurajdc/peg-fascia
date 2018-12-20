@@ -2,6 +2,9 @@ import React, { Component } from "react";
 import VideoInformation from "./VideoInformation";
 import "./VideoPreview.scss";
 
+// Make sure there are placeholders for pre-loading
+
+// Try and move the state out from this child to App.js
 class VideoPreview extends Component {
   constructor(props) {
     super(props);
@@ -44,7 +47,11 @@ class VideoPreview extends Component {
     } else {
       videoContent = (
         <div className="video__selected-video-container">
-          <img className="video__placeholder" src={this.props.videoThumbnail} />
+          <img
+            className="video__placeholder"
+            alt="video placeholder"
+            src={this.props.videoThumbnail}
+          />
           <VideoInformation videoTitle={this.props.videoTitle} />
         </div>
       );
