@@ -14,8 +14,11 @@ class App extends Component {
       error: null,
       isLoaded: false,
       items: [],
-      highlightedVideo: null
+      highlightedVideo: null,
+      displayVideo: false
     };
+
+    this.loadVideo = this.loadVideo.bind(this);
   }
 
   getCreatorName() {
@@ -69,7 +72,6 @@ class App extends Component {
     };
 
     let total = timestamps.reduce(sum, 0);
-    console.log(total / 11);
     return (total / 11).toFixed(1);
   }
 
@@ -136,24 +138,33 @@ class App extends Component {
     return this.state.items.length;
   }
 
+  buildVideoLink(videoID) {
+    return "https://www.youtube.com/embed/" + videoID + "?modestbranding=1";
+  }
+
+  loadVideo() {
+    if (this.state.isLoaded) {
+      this.setState({ displayVideo: true });
+    }
+  }
+
   componentDidMount() {
     fetch(API)
       .then(response => response.json())
-      .then(
-        result => {
-          this.setState({
-            isLoaded: true,
-            items: this.setLikesPercentageForEachVideo(result),
-            mostLikedVideo: this.getMostLikedVideo(result)
-          });
-        },
-        error => {
-          this.setState({
-            isLoaded: true,
-            error
-          });
-        }
-      );
+      .then(result => {
+        this.setState({
+          isLoaded: true,
+          items: this.setLikesPercentageForEachVideo(result),
+          mostLikedVideo: this.getMostLikedVideo(result)
+        });
+      })
+      .catch(error => {
+        console.log("Error:", error);
+        this.setState({
+          isLoaded: false,
+          error: error
+        });
+      });
   }
 
   render() {
@@ -166,11 +177,14 @@ class App extends Component {
     let averageLikesPerVideo;
     let averageUploadInterval;
     let totalViewsToDate;
+    let displayVideo = this.state.displayVideo;
 
     if (this.state.isLoaded) {
       creatorName = this.getCreatorName();
       mostLikedVideoTitle = this.state.highlightedVideo.title;
-      mostLikedVideoLink = this.state.highlightedVideo.link;
+      mostLikedVideoLink = this.buildVideoLink(
+        this.state.highlightedVideo.link
+      );
       mostLikedVideoThumbnail = this.state.highlightedVideo.thumbnail;
       totalVideoCount = this.getTotalVideos();
       averageLikesPerVideo = this.collectedLikesVsDislikesPercentage(
@@ -179,29 +193,37 @@ class App extends Component {
       totalViewsToDate = this.getTotalViewsToDate(this.state.items);
       averageUploadInterval = this.averageTimeBetweenUploads(this.state.items);
 
-      // TODO: Go back to the two components of placeholder and player
-
       videoContent = (
         <VideoPreview
           videoTitle={mostLikedVideoTitle}
           videoLink={mostLikedVideoLink}
           videoThumbnail={mostLikedVideoThumbnail}
+          apiConnectionSuccess={this.state.isLoaded}
+          displayVideo={displayVideo}
         />
       );
     } else {
-      creatorName = "Still loading";
-      mostLikedVideoTitle = "Still loading";
+      creatorName = "~";
+      mostLikedVideoTitle = "~";
       mostLikedVideoLink = "#";
-      mostLikedVideoThumbnail = "#";
       totalVideoCount = "~";
       averageLikesPerVideo = "~";
       totalViewsToDate = "~";
       averageUploadInterval = "~";
+
+      videoContent = (
+        <VideoPreview
+          apiConnectionSuccess={this.state.isLoaded}
+          displayVideo={displayVideo}
+        />
+      );
     }
     return (
       <div className="App">
         <Header creatorName={creatorName} />
-        {videoContent}
+        <section className="video" onClick={this.loadVideo}>
+          {videoContent}
+        </section>
         <QuickStats
           creatorName={creatorName}
           videoCount={totalVideoCount}
