@@ -120,17 +120,17 @@ class App extends Component {
   }
 
   getMostLikedVideo(videos) {
-    let mostLikedVideo = null;
-    Math.max.apply(
-      Math,
-      videos.map(function(video) {
-        return (mostLikedVideo = video.likesPercentage);
-      })
-    );
+    let mostLikedVideo;
+    videos.forEach(video => {
+      if (
+        !mostLikedVideo ||
+        mostLikedVideo.likesPercentage < video.likesPercentage
+      ) {
+        mostLikedVideo = video;
+      }
+    });
     this.setState({
-      highlightedVideo: videos.find(
-        video => video.likesPercentage === mostLikedVideo
-      )
+      highlightedVideo: mostLikedVideo
     });
   }
 
