@@ -1,29 +1,42 @@
 import React from "react";
 import "./QuickStats.scss";
 
+const Stat = ({ title, value }) => {
+  return (
+    <li className="quick-stats__list-item">
+      {title}
+      <span className="statistic">{value}</span>
+    </li>
+  );
+};
+
 const QuickStats = props => {
+  const stats = [
+    {
+      title: `${props.creatorName}'s total uploads:`,
+      value: `${props.videoCount} videos`
+    },
+    {
+      title: `Average likes (vs dislikes) per video:`,
+      value: `${props.averageLikesPerVideo}%`
+    },
+    {
+      title: `Total video views to date:`,
+      value: props.totalViewsToDate
+    },
+    {
+      title: `${props.creatorName} releases content on average:`,
+      value: `Every ${props.averageUploadInterval} days`
+    }
+  ];
+
   return (
     <section className="quick-stats">
       <h2 className="quick-stats__title">Quick stats:</h2>
       <ul className="quick-stats__list">
-        <li className="quick-stats__list--total-videos">
-          {props.creatorName}'s total uploads:{" "}
-          <span className="statistic">{props.videoCount} videos</span>
-        </li>
-        <li className="quick-stats__list--average-likes-per-video">
-          Average likes (vs dislikes) per video:{" "}
-          <span className="statistic">{props.averageLikesPerVideo}%</span>
-        </li>
-        <li className="quick-stats__list--views-to-date">
-          Total video views to date:{" "}
-          <span className="statistic">{props.totalViewsToDate}</span>
-        </li>
-        <li className="quick-stats__list--new-content-release-average">
-          {props.creatorName} releases content on average:
-          <span className="statistic">
-            Every {props.averageUploadInterval} days
-          </span>
-        </li>
+        {stats.map(({ title, value }, index) => (
+          <Stat key={index} title={title} value={value} />
+        ))}
       </ul>
     </section>
   );

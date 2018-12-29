@@ -6,6 +6,10 @@ import "./App.scss";
 
 const API = "http://localhost:3030/videos";
 
+const millisecondsToDays = milliseconds => milliseconds / (1000 * 60 * 60 * 24);
+const sum = (total, amount) => total + amount;
+const differenceBetween = (a, b) => Math.abs(a - b);
+
 class App extends Component {
   constructor(props) {
     super(props);
@@ -32,51 +36,31 @@ class App extends Component {
     return videos.reduce(sum, 0).toLocaleString();
   }
 
-  sortByDate(videos) {
-    return videos.sort(
-      (a, b) => Date.parse(a.published_at) - Date.parse(b.published_at)
-    );
-  }
-
-  dateSortedCopyOfItems(items) {
-    // Creates a deep copy of the array (& contained objects)
-    return JSON.parse(JSON.stringify(this.sortByDate(items)));
-  }
-
   getUploadIntervals(collection) {
     let limit = collection.length - 1;
-    let timestamps = [];
+    let intervalsAsDays = [];
 
     for (let i = 0; i <= limit; i++) {
       if (i < limit) {
-        let upload_a = Date.parse(collection[i].published_at);
-        let upload_b = Date.parse(collection[i + 1].published_at);
-        let timeDifference = this.differenceBetween(upload_a, upload_b);
-        let days = this.millisecondsToDays(timeDifference);
-        timestamps.push(days);
+        let upload_a = collection[i];
+        let upload_b = collection[i + 1];
+        let timeDifference = differenceBetween(upload_a, upload_b);
+        let days = millisecondsToDays(timeDifference);
+        intervalsAsDays.push(days);
       }
     }
-    return timestamps;
-  }
-
-  millisecondsToDays(milliseconds) {
-    return milliseconds / (1000 * 60 * 60 * 24);
+    return intervalsAsDays;
   }
 
   averageTimeBetweenUploads() {
-    let orderedUploads = this.dateSortedCopyOfItems(this.state.items);
-    let timestamps = this.getUploadIntervals(orderedUploads);
+    const timestamps = this.state.items
+      .sort((a, b) => Date.parse(a.published_at) - Date.parse(b.published_at))
+      .map(item => Date.parse(item.published_at));
 
-    const sum = (total, timestamp) => {
-      return total + timestamp;
-    };
+    const intervals = this.getUploadIntervals(timestamps);
 
-    let total = timestamps.reduce(sum, 0);
+    const total = intervals.reduce(sum, 0);
     return (total / 11).toFixed(1);
-  }
-
-  differenceBetween(a, b) {
-    return Math.abs(a - b);
   }
 
   collectedLikes(videos) {
@@ -86,11 +70,10 @@ class App extends Component {
     return videos.reduce(sum, 0);
   }
 
-  collectedDislikes(videos) {
-    const sum = (total, video) => {
-      return total + video.dislikes;
-    };
-    return videos.reduce(sum, 0);
+  sumValues(collection, property) {
+    return collection.reduce((total, element) => {
+      return (total += element[property]);
+    }, 0);
   }
 
   percentage(numerator, denominator) {
@@ -98,8 +81,8 @@ class App extends Component {
   }
 
   collectedLikesVsDislikesPercentage(videos) {
-    let likesAcrossAllVideos = this.collectedLikes(videos);
-    let dislikesAcrossAllVideos = this.collectedDislikes(videos);
+    let likesAcrossAllVideos = this.sumValues(videos, "likes");
+    let dislikesAcrossAllVideos = this.sumValues(videos, "dislikes");
     let allInteractions = likesAcrossAllVideos + dislikesAcrossAllVideos;
     let allLikesPercentage = this.percentage(
       likesAcrossAllVideos,
